@@ -1,23 +1,38 @@
+// backend/submit.js
 import { google } from 'googleapis';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const credsPath  = path.join(__dirname, 'service-account.json'); // ← paste JSON here
+//
+// Load & decode the service account JSON from an env-var (base64-encoded)
+//
+const raw = process.env.GOOGLE_SERVICE_ACCOUNT_B64;
+if (!raw) {
+  throw new Error('Missing GOOGLE_SERVICE_ACCOUNT_B64 environment variable');
+}
+const credentials = JSON.parse(
+  Buffer.from(raw, 'base64').toString('utf8')
+);
 
-/* configure sheets client once */
-const auth  = new google.auth.GoogleAuth({
-  keyFile: credsPath,
+//
+// Configure the Google Sheets client
+//
+const auth = new google.auth.GoogleAuth({
+  credentials,
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
+
 const sheets = google.sheets({ version: 'v4', auth });
 
-/* your spreadsheet ID (from its URL) */
+//
+// Your spreadsheet & range
+//
 const SPREADSHEET_ID = '1kmEKzaM4J1FSZq9OASmVqcR2bbi8yGoJgRI7v8-NYxM';
-const RANGE          = 'Submissions!A:C';   // tab + columns
+const RANGE          = 'Submissions!A:C';
 
+//
+// Append a row of [ timestamp, team, show ] to the sheet
+//
 export async function appendRow(team, show) {
-  const values = [[new Date().toISOString(), team, show]];
+  const values = [[ new Date().toISOString(), team, show ]];
   await sheets.spreadsheets.values.append({
     spreadsheetId: SPREADSHEET_ID,
     range: RANGE,
@@ -25,5 +40,3 @@ export async function appendRow(team, show) {
     requestBody: { values }
   });
 }
-
-
