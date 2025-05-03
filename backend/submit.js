@@ -25,7 +25,7 @@ const sheets = google.sheets({ version: 'v4', auth });
 //
 // Your spreadsheet & range
 //
-const SPREADSHEET_ID = '1kmEKzaM4J1FSZq9OASmVqcR2bbi8yGoJgRI7v8-NYxM';
+const SPREADSHEET_ID = '1kmEKzaM4J1FSZq9OASmVqcR2bbi8yGoJgRI7v8-NYxM'
 const RANGE          = 'Submissions!A:C';
 
 //
