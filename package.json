@@ -1,0 +1,8 @@
+{
+    "name": "tv-trope-app",
+    "scripts": {
+      "start": "node backend/server.js",
+      "heroku-postbuild": "cd frontend && npm install && npm run build"
+    }
+  }
+  

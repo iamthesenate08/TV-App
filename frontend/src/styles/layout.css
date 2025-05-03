@@ -1,0 +1,33 @@
+.wrapper {
+    display: grid;
+    grid-template-areas:
+      "header header"
+      "nav nav"
+      "main aside"
+      "footer footer";
+    gap: 1.5rem;
+  }
+  
+  .header { grid-area: header; }
+  .nav    { grid-area: nav; }
+  .main   { grid-area: main; }
+  .aside  { grid-area: aside; }
+  .footer { grid-area: footer; }
+  
+  /* Scroll snapping for poster lists (if added) */
+  .snap-x {
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+  }
+  .snap-x > * {
+    scroll-snap-align: start;
+  }
+  
+  /* Example container query for cards */
+  @container (min-width: 30rem) {
+    .card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
