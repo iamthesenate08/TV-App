@@ -7,35 +7,28 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
-import { captureOrder } from './paypal.js';    // optional: PayPal capture verification
-import { appendRow }  from './submit.js';      // Google-Sheets helper
+import { captureOrder } from './paypal.js';
+import { appendRow }  from './submit.js';
 
-// __dirname workaround for ES modules
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// allow require() for JSON imports
-const require = createRequire(import.meta.url);
-const shows  = require('./data/shows.json');
+const require   = createRequire(import.meta.url);
+const shows     = require('./data/shows.json');
 
 const app = express();
 
-// ─── MIDDLEWARE ────────────────────────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
 
-// serve your audio files
+// serve audio files
 app.use('/audio', express.static(path.join(__dirname, 'data')));
 
-// ─── API ENDPOINTS ──────────────────────────────────────────────────────────────
+// ── API ROUTES ────────────────────────────────────────────────────
 
-// GET /api/random-show
-// Returns a random TV show from our list
 app.get('/api/random-show', (req, res) => {
   const idx = Math.floor(Math.random() * shows.length);
   res.json({ show: shows[idx] });
 });
 
-// POST /api/submit
-// Appends [ timestamp, team, show ] to your Google Sheet
 app.post('/api/submit', async (req, res) => {
   const { team, show } = req.body || {};
   if (!team || !show) {
@@ -50,8 +43,6 @@ app.post('/api/submit', async (req, res) => {
   }
 });
 
-// POST /api/paypal/capture
-// Verifies a PayPal order ID (optional)
 app.post('/api/paypal/capture', async (req, res) => {
   const { orderID } = req.body || {};
   if (!orderID) {
@@ -66,17 +57,19 @@ app.post('/api/paypal/capture', async (req, res) => {
   }
 });
 
-// ─── SERVE REACT FRONTEND ───────────────────────────────────────────────────────
-// Serve the static build files
+// ── SERVE REACT FRONTEND ───────────────────────────────────────────
+
+// 1️⃣ Serve the static files from the React app
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// For any other route, serve index.html so React Router can handle it
-app.get('*', (req, res) => {
+// 2️⃣ Fallback for any other requests — no path pattern, so no path-to-regexp parsing
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
 
-// ─── START SERVER ───────────────────────────────────────────────────────────────
+// ── START SERVER ───────────────────────────────────────────────────
+
 const PORT = process.env.PORT || 3001;
 http.createServer(app).listen(PORT, () => {
-  console.log(`Backend API listening on http://localhost:${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });
