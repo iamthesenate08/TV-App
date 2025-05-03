@@ -71,7 +71,7 @@ app.post('/api/paypal/capture', async (req, res) => {
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 // For any other route, serve index.html so React Router can handle it
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
 
