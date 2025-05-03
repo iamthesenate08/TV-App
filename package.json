@@ -5,6 +5,7 @@
         "heroku-postbuild": "cd frontend && npm install && npm run build"
     },
     "dependencies": {
-        "@paypal/checkout-server-sdk": "^1.0.3"
+        "@paypal/checkout-server-sdk": "^1.0.3",
+        "dotenv": "^16.5.0"
     }
 }
