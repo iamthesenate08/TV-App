@@ -1,14 +1,25 @@
 {
     "name": "tv-trope-app",
+    "version": "1.0.0",
+    "description": "TV Trope Chooser combined front-end & back-end",
+    "main": "backend/server.js",
+    "engines": {
+      "node": "16.x",
+      "npm": "8.x"
+    },
     "scripts": {
-        "start": "node backend/server.js",
-        "heroku-postbuild": "cd frontend && npm install && npm run build"
+      "start": "node backend/server.js",
+      // For Heroku:
+      "heroku-postbuild": "cd frontend && npm install && npm run build",
+      // For Render (and generic npm install):
+      "postinstall": "cd frontend && npm install && npm run build"
     },
     "dependencies": {
-        "@paypal/checkout-server-sdk": "^1.0.3",
-        "cors": "^2.8.5",
-        "dotenv": "^16.5.0",
-        "express": "^5.1.0",
-        "googleapis": "^148.0.0"
+      "@paypal/checkout-server-sdk": "^1.0.3",
+      "cors": "^2.8.5",
+      "dotenv": "^16.5.0",
+      "express": "^5.1.0",
+      "googleapis": "^148.0.0"
     }
-}
+  }
+  
