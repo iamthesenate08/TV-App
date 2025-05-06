@@ -10,7 +10,7 @@ export default function FlipRoller() {
   const finalRef       = useRef(null);
 
   /* ------------ state ------------ */
-  const [history,       setHistory]      = useState([]);  
+  const [history,       setHistory]      = useState([]);
   const [busy,          setBusy]         = useState(false);
   const [ready,         setReady]        = useState(false);
   const [selected,      setSelected]     = useState(null);
@@ -25,6 +25,34 @@ export default function FlipRoller() {
 
   const [allowance,     setAllow]        = useState(3);
   const [target,        setTarget]       = useState(3);
+
+  // ————— Persist state in localStorage —————
+
+  // On mount, try to hydrate from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem('flipRollerState');
+    if (stored) {
+      try {
+        const { history, allowance, target, ready, finished, selected } = JSON.parse(stored);
+        setHistory(history);
+        setAllow(allowance);
+        setTarget(target);
+        setReady(ready);
+        setFinished(finished);
+        setSelected(selected);
+      } catch (e) {
+        console.warn('Failed to parse flipRollerState from localStorage', e);
+      }
+    }
+  }, []);
+
+  // Whenever key pieces of state change, persist them
+  useEffect(() => {
+    const state = { history, allowance, target, ready, finished, selected };
+    localStorage.setItem('flipRollerState', JSON.stringify(state));
+  }, [history, allowance, target, ready, finished, selected]);
+
+  /* ————————— existing logic unchanged ————————— */
 
   const spinCoinMs = 1000;
   const spinDiceMs = 800;
@@ -41,12 +69,10 @@ export default function FlipRoller() {
     const $coin = $wrap.find('#coin');
     const $dice = $wrap.find('.die');
     let lastFace = null, tensVal = null, onesVal = null;
-
     const rndFace = () => {
       const f = Math.floor(Math.random() * 10);
       return f === lastFace ? rndFace() : (lastFace = f);
     };
-
     const revealShow = async () => {
       try {
         const res = await fetch('/api/random-show');
@@ -56,7 +82,6 @@ export default function FlipRoller() {
         setHistory(h => [...h, '⚠️ Error']);
       }
     };
-
     const spinDie = $d => {
       $d.addClass('rolling');
       setTimeout(() => {
@@ -72,7 +97,6 @@ export default function FlipRoller() {
         }
       }, spinDiceMs);
     };
-
     const flipAndRoll = () => {
       if (busy || allowance === 0 || history.length >= target) return;
       setBusy(true);
@@ -86,7 +110,6 @@ export default function FlipRoller() {
         $dice.each((_, el) => spinDie($(el)));
       }, spinCoinMs);
     };
-
     $wrap.find('#flipRollBtn').on('click', e => { e.preventDefault(); flipAndRoll(); });
     $coin.on('click', flipAndRoll);
     return () => {
@@ -201,7 +224,6 @@ export default function FlipRoller() {
     setTarget(t => t + 3);
   };
 
-  /* ---------- show Pay button until done ---------- */
   const showPayBtn = ready && !finished;
 
   return (
