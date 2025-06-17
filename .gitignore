@@ -3,3 +3,4 @@
 /frontend/build
 /backend/node_modules
 .env
+/backend/service-account.json
