@@ -14,7 +14,7 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
 
 // Configure PayPal environment (Sandbox for testing; switch to LiveEnvironment in production)
 function environment() {
-  return new checkoutNodeJssdk.core.SandboxEnvironment(
+  return new checkoutNodeJssdk.core.LiveEnvironment(
     CLIENT_ID,
     CLIENT_SECRET
   );
