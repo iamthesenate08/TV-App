@@ -1,5 +1,5 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+// jest-dom would normally add custom matchers such as
+// `toBeInTheDocument`, but the project does not rely on
+// those matchers.  Keeping this file ensures the test
+// environment is configured consistently without pulling
+// in an extra dependency.
