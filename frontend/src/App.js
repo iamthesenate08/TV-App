@@ -6,7 +6,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-gray-900 text-gray-100">
       {/* header */}
       <header className="p-6 text-white bg-gradient-to-r from-indigo-500 to-purple-600">
-        <h1 className="text-3xl font-extrabold">Choose a Show</h1>
+        <h1 className="text-3xl font-extrabold">Choose a movie</h1>
       </header>
 
       {/* main — flexbox centers its child */}

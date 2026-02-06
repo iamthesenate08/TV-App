@@ -231,10 +231,10 @@ export default function FlipRoller() {
       <div className="relative z-0 flex flex-col md:flex-row gap-10 mx-auto w-fit">
         {/* LEFT SIDE */}
         <section ref={wrapperRef} className="max-w-lg text-center">
-          <h1 className="text-2xl font-bold mb-4 text-white">SHOW-O-MATIC</h1>
+          <h1 className="text-2xl font-bold mb-4 text-white">MOVIE-O-MATIC</h1>
           <p className="text-white mb-4">
             Step 1: Roll three times. You can pay for more rolls if you want.<br/>
-            Step 2: Click a show to lock it in OR choose to submit later.
+            Step 2: Click a movie to lock it in OR choose to submit later.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mx-auto mb-6">
@@ -304,7 +304,7 @@ export default function FlipRoller() {
                 }`}
                 onClick={handleFinal}
               >
-                {selected == null ? 'Choose a show to lock in' : 'FINAL ANSWER'}
+                {selected == null ? 'Choose a movie to lock in' : 'FINAL ANSWER'}
               </button>
               <button
                 className="mt-4 px-6 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded"
@@ -344,12 +344,12 @@ export default function FlipRoller() {
       {wildcardModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="bg-gray-800 text-white p-8 rounded-lg w-80 flex flex-col space-y-4">
-            <h3 className="text-2xl font-bold">You chose WILDCARD—you can pick any show you want! What will it be?</h3>
+            <h3 className="text-2xl font-bold">You chose WILDCARD—you can pick any movie you want! What will it be?</h3>
             <input
               type="text"
               value={wildcardInput}
               onChange={e => setWildcardInput(e.target.value)}
-              placeholder="Show Title"
+              placeholder="Movie Title"
               className="p-2 rounded text-black"
             />
             <div className="flex space-x-4">
