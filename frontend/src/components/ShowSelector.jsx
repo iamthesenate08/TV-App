@@ -16,7 +16,7 @@ export default function ShowSelector() {
       const { show } = await res.json();
       setShow(show);
     } catch (e) {
-      setError('Couldn’t load a show. Try again.');
+      setError('Couldn’t load a movie. Try again.');
     } finally {
       setLoading(false);
     }
@@ -29,7 +29,7 @@ export default function ShowSelector() {
         className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition"
         disabled={loading}
       >
-        {loading ? 'Loading…' : 'Pick a Random Show'}
+        {loading ? 'Loading…' : 'Pick a Random movie'}
       </button>
 
       {error && (
