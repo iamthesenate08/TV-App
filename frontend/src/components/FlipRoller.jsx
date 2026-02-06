@@ -27,10 +27,19 @@ export default function FlipRoller() {
   const [target,        setTarget]       = useState(3);
 
   // ————— Persist state in localStorage —————
+  const CACHE_VERSION = '2';
+  const CACHE_VERSION_KEY = 'flipRollerCacheVersion';
+  const CACHE_STATE_KEY = 'flipRollerState';
 
   // On mount, try to hydrate from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem('flipRollerState');
+    const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
+    if (cachedVersion !== CACHE_VERSION) {
+      localStorage.removeItem(CACHE_STATE_KEY);
+      localStorage.setItem(CACHE_VERSION_KEY, CACHE_VERSION);
+      return;
+    }
+    const stored = localStorage.getItem(CACHE_STATE_KEY);
     if (stored) {
       try {
         const { history, allowance, target, ready, finished, selected } = JSON.parse(stored);
@@ -49,7 +58,7 @@ export default function FlipRoller() {
   // Whenever key pieces of state change, persist them
   useEffect(() => {
     const state = { history, allowance, target, ready, finished, selected };
-    localStorage.setItem('flipRollerState', JSON.stringify(state));
+    localStorage.setItem(CACHE_STATE_KEY, JSON.stringify(state));
   }, [history, allowance, target, ready, finished, selected]);
 
   /* ————————— existing logic unchanged ————————— */
